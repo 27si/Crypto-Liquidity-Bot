@@ -40,12 +40,25 @@ if len(today_df) >= 3:
   )
 
   if is_bullish_sweep:
+    # Risk Management Calculations
+    entry_price = current_price
+    # Stop loss set kiya hai sweep low ke thoda niche safety buffer ke sath
+    stop_loss = min(prev_row['Low'], latest_row['Low']) - 20
+    risk = entry_price - stop_loss
+    take_profit = entry_price + (risk * 2)  # 1:2 Risk-to-Reward Ratio
+
     msg = (
-        f'🚨 *LIQUIDITY SWEEP BUY SIGNAL!*\nSymbol:'
-        f' {symbol}\nPrice: `{current_price:.2f}`\nTime: {latest_time}'
+        f'🚨 *LIQUIDITY SWEEP BUY SIGNAL!*\n'
+        f'━━━━━━━━━━━━━━━━━━━\n'
+        f'📌 **Symbol:** {symbol}\n'
+        f'🟢 **Entry:** `{entry_price:.2f}`\n'
+        f'🛑 **Stop Loss:** `{stop_loss:.2f}`\n'
+        f'🎯 **Take Profit:** `{take_profit:.2f}`\n'
+        f'⏰ **Time:** {latest_time}\n'
+        f'━━━━━━━━━━━━━━━━━━━'
     )
     send_telegram_message(msg)
-    print('Bullish sweep signal sent!')
+    print('Bullish sweep signal with SL & TP sent!')
   else:
     print(f'No sweep signal at {latest_time}')
 else:
