@@ -12,6 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Check files in folder
+        run: ls -la
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -22,9 +25,8 @@ jobs:
           pip install pandas yfinance requests
 
       - name: Run bot script
-        working-directory: .
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: |
-          python ./bot.py
+          python bot.py
